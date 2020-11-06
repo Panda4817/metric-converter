@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Metric Converter</title>
+    <meta name="description" content="A cool thing made with HyperDev">
+    <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./public/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>
+        Metric/Imperial Converter
+      </h1>
+    </header>
+    <div id='userstories' style='margin-left: 5%; margin-top: 5%'>
+      <h3>Example usage:</h3>
+      <code>/api/convert?input=4gal</code><br>
+      <code>/api/convert?input=1/2km</code><br>
+      <code>/api/convert?input=5.4/3lbs</code><br>
+      <code>/api/convert?input=kg</code><br>
+      <h3>Example return:</h3>
+      <code>{initNum: 3.1, initUnit: 'mi', returnNum: 5.0000008, returnUnit: 'km', string: '3.1 miles converts to 5.00002 kilometers'}</code>
+    </div>
+    <hr style='margin: 50px'>
+    <div id='testui' style='margin-left: 5%'>
+      <h2 style="text-align: left">Front-End:</h2>
+      <form id="convertForm" class="border">
+        <input type="text" id="convertField" name="input" placeholder="3.1mi" style="width: 200px">
+        <input id="convert" type="submit" value='Convert!'>
+      </form>
+      <p id='result'></p>
+      <code id='jsonResult'></code>
+    </div>
+    <hr style='margin: 50px; margin-top: 200px'>
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script>
+      $(function() {
+        $('#convertForm').submit(function(event) {
+          event.preventDefault();
+          $.ajax({
+            url: '/api/convert',
+            type: 'get',
+            data: $('#convertForm').serialize(),
+            success: function(data) {
+              $('#result').text(data.string == 'Error' ? data.string + ' - ' + $('#convertField').val() : data.string || data);
+              $('#jsonResult').text(JSON.stringify(data));
+            }
+          });
+        });
+      });
+   </script>
+  </body>
+</html>
